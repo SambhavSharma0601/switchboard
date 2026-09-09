@@ -305,6 +305,15 @@ function Sources({ sources, setSources }) {
       ) : null}
 
       <div className="sect">
+        <h2>Add from a careers URL</h2>
+        <div className="sub">
+          The fastest way to add the companies you actually want. Paste any careers
+          page and it works out the board — including Workday, which discovery cannot guess.
+        </div>
+        <FromUrl sources={sources} persist={persist} have={have} />
+      </div>
+
+      <div className="sect">
         <h2>Add a board by hand</h2>
         <div className="sub">
           Workday tokens use the form <code>tenant|wd3|SiteName</code>, read off the careers URL.
@@ -347,6 +356,71 @@ function Sources({ sources, setSources }) {
           </div>
         ) : null}
       </div>
+    </div>
+  );
+}
+
+
+function FromUrl({ sources, persist, have }) {
+  const [url, setUrl] = useState("");
+  const [company, setCompany] = useState("");
+  const [busy, setBusy] = useState(false);
+  const [res, setRes] = useState(null);
+
+  const go = async () => {
+    setBusy(true); setRes(null);
+    try {
+      const r = await fetch("/api/detect", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ url, company }),
+      });
+      setRes(await r.json());
+    } catch (e) {
+      setRes({ ok: false, error: String(e.message || e) });
+    }
+    setBusy(false);
+  };
+
+  return (
+    <div>
+      <input className="i mb" placeholder="Company name" value={company}
+        onChange={(e) => setCompany(e.target.value)} />
+      <input className="i mb" placeholder="https://company.com/careers"
+        value={url} onChange={(e) => setUrl(e.target.value)} />
+      <button className="btn" disabled={busy || !url.trim()} onClick={go}>
+        {busy ? <Spinner /> : null} {busy ? "Checking" : "Detect board"}
+      </button>
+
+      {res && res.error ? <div className="mt"><Note tone="warn">{res.error}</Note></div> : null}
+
+      {res && res.ok ? (
+        <div className="mt">
+          {res.found.map((f, i) => (
+            <div key={i} className="between"
+              style={{ padding: "9px 0", borderBottom: "1px solid var(--line-soft)" }}>
+              <div className="grow">
+                <div className="small b">{f.provider} · {f.token}</div>
+                <div className="tiny muted">
+                  {f.count} jobs
+                  {typeof f.indiaCount === "number"
+                    ? ` · ${f.indiaCount} in India`
+                    : ""}
+                </div>
+                {f.sample && f.sample.length ? (
+                  <div className="tiny muted truncate">{f.sample.join(" · ")}</div>
+                ) : null}
+              </div>
+              <button className="btn quiet sm"
+                disabled={have.has(f.provider + ":" + f.token)}
+                onClick={() => persist([...sources,
+                  { company: company || f.token, provider: f.provider, token: f.token }])}>
+                {have.has(f.provider + ":" + f.token) ? "Added" : "Add"}
+              </button>
+            </div>
+          ))}
+        </div>
+      ) : null}
     </div>
   );
 }
