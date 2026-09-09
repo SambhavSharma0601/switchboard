@@ -1,0 +1,40 @@
+{
+  "_comment": [
+    "boards[] holds VERIFIED job-board endpoints. Each entry is {company, provider, token}.",
+    "Do not trust guesses here — use the Sources page to auto-discover and verify tokens,",
+    "then paste the confirmed list back into this file (or keep it in browser storage).",
+    "Workday tokens use the form: tenant|wd3|SiteName",
+    "Providers: greenhouse | lever | ashby | smartrecruiters | recruitee | workable | workday"
+  ],
+
+  "boards": [],
+
+  "candidates": {
+    "Telecom / OSS-BSS": [
+      "Amdocs", "Netcracker", "Ericsson", "Nokia", "Rakuten Symphony",
+      "Sterlite Technologies", "Tejas Networks", "Comviva", "Subex",
+      "Tata Communications", "Ciena", "Infinera", "Juniper Networks", "Optiva",
+      "Matrixx Software", "Totogi", "Whale Cloud"
+    ],
+    "Financial GCC": [
+      "Fiserv", "FIS", "Mastercard", "Visa", "PayPal", "Nasdaq", "SS&C",
+      "Broadridge", "Morningstar", "FactSet", "Clearwater Analytics",
+      "Addepar", "Plaid", "Marqeta", "Modern Treasury"
+    ],
+    "Indian fintech & product": [
+      "Razorpay", "Juspay", "Zeta", "Groww", "PhonePe", "Navi", "Setu",
+      "CRED", "Perfios", "M2P Fintech", "Jupiter", "Slice", "KreditBee",
+      "Zerodha", "Smallcase", "Signzy", "Cashfree", "Meesho", "Zepto",
+      "Rapido", "Porter", "Lenskart", "Postman", "Hasura", "Chargebee",
+      "Freshworks", "Zoho", "BrowserStack", "Whatfix", "Darwinbox",
+      "Innovaccer", "Sprinklr", "MoEngage", "Netcore", "Yellow.ai"
+    ],
+    "Global product with India teams": [
+      "Atlassian", "Databricks", "Confluent", "HashiCorp", "Elastic",
+      "MongoDB", "Snowflake", "Datadog", "Twilio", "Stripe", "Cloudflare",
+      "GitLab", "Grafana Labs", "Redis", "Temporal", "Airbyte", "dbt Labs",
+      "Rippling", "Deel", "Remote", "Canva", "Figma", "Notion", "Linear",
+      "Vercel", "Supabase", "Render", "Neon", "PlanetScale"
+    ]
+  }
+}

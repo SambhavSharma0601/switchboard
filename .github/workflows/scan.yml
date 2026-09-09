@@ -1,0 +1,18 @@
+# Free scheduled scanning, more often than Vercel Hobby cron allows.
+# Add repo secrets: APP_URL (https://your-app.vercel.app) and CRON_SECRET.
+name: Scan job boards
+
+on:
+  schedule:
+    - cron: "*/30 5-16 * * 1-5"   # every 30 min, 05:00-16:59 UTC, weekdays
+  workflow_dispatch:
+
+jobs:
+  scan:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Trigger scan
+        run: |
+          curl -sS -X POST "${{ secrets.APP_URL }}/api/cron" \
+            -H "Authorization: Bearer ${{ secrets.CRON_SECRET }}" \
+            --max-time 120 | head -c 2000
